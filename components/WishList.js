@@ -48,11 +48,10 @@ class WishListWithProducts extends React.Component {
 
   render() {
     return (
-      <Query query={GET_PRODUCTS_BY_ID} variables={{ ids: store.get('ids') }}>
+      <Query query={GET_PRODUCTS_BY_ID} variables={{ ids: this.props.wishListIds }}>
         {({ data, loading, error }) => {
           if (loading) return <div>Loading...</div>;
           if (error) return <div>{error.message}</div>
-          console.log(data)
           return (
             <Page>
             <Heading>Your Wishlist</Heading>
@@ -102,9 +101,11 @@ class WishListWithProducts extends React.Component {
                       </Stack.Item>
                       <Stack.Item>
                         <Button
-                        onClick={this.props.handleDelete}
+                          id={item.id}
+                          onClick={this.props.handleDelete}
+                          title="Delete"
                         >
-                          Delete
+                        <span id={item.id}>Delete</span>
                         </Button>
                       </Stack.Item>
                     </Stack>

@@ -1,18 +1,18 @@
 import { EmptyState, Layout, Page, ResourcePicker, ResourceList } from '@shopify/polaris';
-import store from 'store-js';
 import WishListWithProducts from '../components/WishList';
 
 const img = 'https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg'
 
 class Index extends React.Component {
-
   state = {
     open: false,
-    wishListIds: []
+    wishListIds: [],
+    emptyState: true
   };
 
     render() {
-      const emptyState = !store.get('ids')
+      const {emptyState} = this.state
+      console.log('re-rendered state', this.state)
       return (
         <Page
           primaryAction={{
@@ -44,8 +44,9 @@ class Index extends React.Component {
             </Layout>
           ) : (
               <WishListWithProducts
-                handleDelete={(resources) => this.handleDelete (resources)}
+                handleDelete={(e) => this.handleDelete(e)}
                 handleAddMore={this.handleAddMore}
+                wishListIds={this.state.wishListIds}
               />
           )}
       </Page>
@@ -54,22 +55,27 @@ class Index extends React.Component {
 
   handleSelection = (resources) => {
     console.log('state', this.state)
-    const { wishListIds } = this.state;
+    const { wishListIds, emptyState } = this.state;
     const newWishListIds = resources.selection.map((product) => product.id)
     this.setState((prevState) => ({
-      wishListIds: prevState.wishListIds.concat(newWishListIds)
+      wishListIds: prevState.wishListIds.concat(newWishListIds),
+      emptyState: false
     }))
     console.log('state', this.state)
-    store.set('ids', wishListIds)
-    store.set('ids', this.state.wishListIds);
     this.setState({open:false})
   }
 
-  // handleDelete = (resources) => {
-  //   idsToDelete = resources.selection.map((product) => product.id)
-  //   console.log('deleted!')
-  //   console.log('idsToDelete')
-  // }
+  handleDelete = (e) => {
+    const { wishListIds } = this.state;
+    console.log(e.target.id)
+    const filteredIds = wishListIds.filter((id) => id !== e.target.id)
+    console.log('filteredIds', filteredIds)
+    this.setState({
+      wishListIds: filteredIds
+    })
+    console.log(wishListIds)
+
+  }
 
   handleAddMore = () => {
     this.setState({

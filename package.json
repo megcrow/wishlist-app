@@ -29,6 +29,5 @@
     "react": "^16.8.6",
     "react-apollo": "^2.5.3",
     "react-dom": "^16.8.6",
-    "store-js": "^2.0.4"
   }
 }
