@@ -31,7 +31,7 @@ class WishListApp extends App {
           apiKey={API_KEY}
           forceRedirect
         >
-          <ApolloProvider>
+          <ApolloProvider client={client}>
             <Component {...pageProps} />
           </ApolloProvider>
         </AppProvider>
